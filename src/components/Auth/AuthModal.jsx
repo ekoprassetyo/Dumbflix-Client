@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 import { UserContext } from '../../context/userContext';
 import { useMutation } from 'react-query';
 import {Alert} from 'react-bootstrap'
@@ -15,7 +16,7 @@ import '../../components/Auth.modules.css'
 
 
 const UserDataObject = {
-  fullName: "",
+  name: "",
   email: "",
   gender: "",
   phone: "",
@@ -27,9 +28,11 @@ const UserDataObject = {
 
 const AuthModal = ({ show, handleClose }) => {
   const [isRegister, setIsRegister] = useState(false);
-
+  
   const [iconPassword, seticonPassword] = useState(false);
 
+  const navigate = useNavigate();
+  
   const switchMode = () => {
     setUserData(UserDataObject);
     seticonPassword(false);
@@ -39,23 +42,55 @@ const AuthModal = ({ show, handleClose }) => {
   const [userData, setUserData] = useState(UserDataObject);
 
   const handleChange = (event) => {
-    setUserData((change) => ({
-      ...change,
+    setUserData((prevData) => ({
+      ...prevData,
       [event.target.name]: event.target.value
     }));
   };
 
-  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    handleClose();
-
-    if (isRegister) {
-      localStorage.setItem("user", JSON.stringify(userData));
-      navigate("/");
+    const dataLogin = {
+      Email : userData.email,
+      Password : userData.password
     }
+
+    const dataRegister = {
+      Name : userData.name,
+      Email : userData.email,
+      Gender : userData.gender,
+      Phone : userData.phone,
+      Address : userData.address,
+      Password : userData.password
+    }
+    
+    if (isRegister) {
+      try {
+        let result = await API.post('/register', dataRegister)
+        console.log(result)
+        Swal.fire(
+          'Good job!',
+          'Succesfuly Register',
+          'success'
+          )
+          setIsRegister(false)
+      } catch (err){
+        console.log(err)
+      }
+    } else {   
+      try {
+        let result = await API.post('/login', dataLogin)
+        console.log(result)
+        localStorage.setItem("user", JSON.stringify(userData));
+        navigate("/");
+        handleClose();
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
   };
 
   return (
@@ -70,8 +105,8 @@ const AuthModal = ({ show, handleClose }) => {
           
            {/* Full Name */}
            {isRegister && (
-            <Form.Group className="mb-3" controlId="fullName">
-              <Form.Control type="text" name="fullName" placeholder="Full Name" className="bg-gradient-secondary" onChange={handleChange} />
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Control type="text" name="name" placeholder="Full Name" className="bg-gradient-secondary" onChange={handleChange} />
             </Form.Group>
           )}
           {/* Email */}
@@ -105,7 +140,7 @@ const AuthModal = ({ show, handleClose }) => {
             {/* Password */}
             <div className="mb-3 pw__container">
             <Form.Group controlId="password">
-              <Form.Control type={iconPassword ? "text" : "password"} placeholder="Password" onChange={handleChange} />
+              <Form.Control type={iconPassword ? "text" : "password"} name="password" placeholder="Password" onChange={handleChange} />
             </Form.Group>
           </div>
 

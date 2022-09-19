@@ -16,8 +16,9 @@ function AddFilm() {
                 <Form.Control placeholder="Title"  className="bg-dark text-light" />
             </Col>
             <Col sm={2}>
-                <Form.Label className="mt-4 bg-dark text-secondary px-1 py-1" style={{borderRadius:"8px", border:"1px solid"}}>Attach Thumbnail<CgAttachment style={{color:"red" , fontSize:"20px"}}/> </Form.Label>
-                <Form.Control type="file"  className="bg-dark" hidden/>
+                <Form.Label className="mt-4 bg-dark text-secondary px-1 py-1" style={{borderRadius:"8px", border:"1px solid"}}>Attach Thumbnail<CgAttachment style={{color:"red" , fontSize:"20px"}}/> 
+                    <Form.Control type="file"  className="bg-dark" hidden/>
+                </Form.Label>
             </Col>
         </Row>
 
@@ -45,8 +46,9 @@ function AddFilm() {
                 <Form.Control placeholder="Title Episode" className="bg-dark text-light"></Form.Control>
             </Col>
             <Col sm={2}>
-                <Form.Label className="mt-4 bg-dark text-secondary px-1 py-1" style={{borderRadius:"8px", border:"1px solid"}}>Attach Thumbnail<CgAttachment style={{color:"red" , fontSize:"20px"}}/> </Form.Label>
-                <Form.Control type="file"  className="bg-dark" hidden/>
+                <Form.Label className="mt-4 bg-dark text-secondary px-1 py-1" style={{borderRadius:"8px", border:"1px solid"}}>Attach Thumbnail<CgAttachment style={{color:"red" , fontSize:"20px"}}/> 
+                    <Form.Control type="file"  className="bg-dark" hidden/>                
+                </Form.Label>
             </Col>
         </Row>
     </Form.Group>

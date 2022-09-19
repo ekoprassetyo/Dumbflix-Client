@@ -17,7 +17,7 @@ import profileUser from '../../assets/images/profileUser.png';
 const initialUser = {
   email: "",
   password: "",
-  fullname: "",
+  name: "",
   gender: "",
   phone: "",
   address: ""
@@ -36,7 +36,7 @@ function ProfileHome() {
       setIsLogin(true)
       setUserData({
         ...userData,
-        fullName: user?.fullName,
+        name: user?.name,
         email: user?.email,
         password: user?.password,
         gender: user?.gender,
@@ -54,9 +54,9 @@ function ProfileHome() {
 
   return (
     <Container>
-    <Row className="justify-content-center">
+    <Row className="justify-content-center" style={{margin:"100px"}}>
       <Col md={8}>
-        <Card className="rounded shadow border-0 bg-dark text-white p-5" style={{marginTop:"80px"}}>
+        <Card className="rounded shadow border-0 bg-dark text-white p-5" >
           <div className="d-flex justify-content-between">
             <div className="me-5">
               <h3>Personal Info</h3>
@@ -65,7 +65,7 @@ function ProfileHome() {
                 <div className="d-flex mb-3 align-items-start">
                   <FaUserCircle className="text-danger me-3 fs-1" />
                   <div>
-                    <h5>{userData.fullName}</h5>
+                    <h5>{userData.name}</h5>
                     <p className="text-muted">Full Name</p>
                   </div>
                 </div>

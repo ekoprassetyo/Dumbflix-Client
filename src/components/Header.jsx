@@ -46,14 +46,14 @@ function NavScroll() {
             <Nav.Link as =  {Link} to='/tvshow' className="text-light fs-5 fw-light ms-3" >TV Shows</Nav.Link>
             <Nav.Link as =  {Link} to='/movies' className="text-light fs-5 fw-light ms-3" >Movies</Nav.Link>
           </Nav>
-        <Navbar.Brand href="/"  style= {{ width: "100%",padding:"0px 0px 0px 180px" }} ><img src={LogoDF} alt="" /></Navbar.Brand>
+        <Navbar.Brand as = {Link} to="/"  style= {{ width: "100%",padding:"0px 0px 0px 180px" }} ><img src={LogoDF} alt="" /></Navbar.Brand>
           
           
           <Nav>
             {isRegister ? (
               <Dropdown style={{paddingRight:"115px"}}>
                 <Dropdown.Toggle id="user-dropdown" variant="white">
-                  <img src={masgan} alt="Masgan" width={30} className="rounded-pill" />
+                  <img src={masgan} alt="Masgan" width={50} className="rounded-pill" />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu variant="dark" style={{alignItem:"left", marginTop:"7px"}}>
@@ -78,7 +78,6 @@ function NavScroll() {
               
             ) : (
               <Form className="d-flex">
-              {/* <Button variant="light" className="text-danger fw-bold me-3 px-5" onClick={handleShow}>Register</Button> */}
               <Button variant="danger" className="bg-danger me-5 fw-bold px-5" onClick={handleShow}>Login</Button>
               </Form>
             )}
