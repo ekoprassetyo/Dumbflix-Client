@@ -24,10 +24,11 @@ const UserDataObject = {
   password: "",
   photo: "",
   status: "Active",
+  role : "" ,
 };
 
 const AuthModal = ({ show, handleClose }) => {
-  const [isRegister, setIsRegister] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   
   const [iconPassword, seticonPassword] = useState(false);
 
@@ -36,7 +37,7 @@ const AuthModal = ({ show, handleClose }) => {
   const switchMode = () => {
     setUserData(UserDataObject);
     seticonPassword(false);
-    setIsRegister(!isRegister);
+    setIsLogin(!isLogin);
   };
 
   const [userData, setUserData] = useState(UserDataObject);
@@ -63,10 +64,11 @@ const AuthModal = ({ show, handleClose }) => {
       Gender : userData.gender,
       Phone : userData.phone,
       Address : userData.address,
-      Password : userData.password
+      Password : userData.password,
+      Role : userData.role
     }
     
-    if (isRegister) {
+    if (isLogin) {
       try {
         let result = await API.post('/register', dataRegister)
         console.log(result)
@@ -75,7 +77,7 @@ const AuthModal = ({ show, handleClose }) => {
           'Succesfuly Register',
           'success'
           )
-          setIsRegister(false)
+          setIsLogin(false)
       } catch (err){
         console.log(err)
       }
@@ -83,8 +85,14 @@ const AuthModal = ({ show, handleClose }) => {
       try {
         let result = await API.post('/login', dataLogin)
         console.log(result)
+        
+            if (dataRegister.role == "admin") {
+              navigate("/admin");
+            } else {
+              navigate("/")
+            }
+
         localStorage.setItem("user", JSON.stringify(userData));
-        navigate("/");
         handleClose();
       } catch (err) {
         console.log(err)
@@ -97,14 +105,14 @@ const AuthModal = ({ show, handleClose }) => {
     <Modal show={show} onHide={handleClose}>
 
       <Modal.Header className="bg-dark text-white border-0">
-        <Modal.Title>{isRegister ? "Register" : "Login"}</Modal.Title>
+        <Modal.Title>{isLogin ? "Register" : "Login"}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body className="bg-dark text-white border-0">
         <Form className="px-1" onSubmit={handleSubmit}>
           
            {/* Full Name */}
-           {isRegister && (
+           {isLogin && (
             <Form.Group className="mb-3" controlId="name">
               <Form.Control type="text" name="name" placeholder="Full Name" className="bg-gradient-secondary" onChange={handleChange} />
             </Form.Group>
@@ -115,7 +123,7 @@ const AuthModal = ({ show, handleClose }) => {
           </Form.Group>
 
           {/* Gender */}
-          {isRegister && (
+          {isLogin && (
             <Form.Select className="mb-3" onChange={handleChange} name="gender" >
               <option disabled selected hidden>Gender</option>
               <option value="Male">Male</option>
@@ -124,14 +132,14 @@ const AuthModal = ({ show, handleClose }) => {
           )}
 
           {/* Phone*/}
-          {isRegister && (
+          {isLogin && (
             <Form.Group className="mb-3" controlId="phone">
               <Form.Control name="phone" type="text" placeholder="Phone" onChange={handleChange} />
             </Form.Group>
           )}
 
           {/* Address */}
-          {isRegister && (
+          {isLogin && (
             <Form.Group className="mb-3" controlId="address">
               <Form.Control as="textarea" name="address" placeholder="Address"  onChange={handleChange} />
             </Form.Group>
@@ -145,12 +153,12 @@ const AuthModal = ({ show, handleClose }) => {
           </div>
 
           <div className="bg-dark text-white border-0 d-grid gap-2 p-4">
-            <Button variant = {isRegister ? "light" : "danger"} type="submit" className={isRegister ? "text-danger" : "text-white"}>
-              {isRegister ? "Register" : "Login"}
+            <Button variant = {isLogin ? "light" : "danger"} type="submit" className={isLogin ? "text-danger" : "text-white"}>
+              {isLogin ? "Register" : "Login"}
             </Button>
             
             <p className="text-muted text-center mt-2">
-              {isRegister ? "Already have an account? Click " : "Don't have an account? Click "} {" "}
+              {isLogin ? "Already have an account? Click " : "Don't have an account? Click "} {" "}
               <span className="switchBtn text-primary" onClick={switchMode}> Here </span>
             </p>
           </div>

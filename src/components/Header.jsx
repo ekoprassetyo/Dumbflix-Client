@@ -17,9 +17,9 @@ function NavScroll() {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  const [isRegister, setisRegister] = useState(false);
+  // const [isLogin, setisRegister] = useState(false);
   
-  // const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -30,8 +30,8 @@ function NavScroll() {
   };
 
   useEffect(() => {
-    if (user) setisRegister(true);
-    else setisRegister(false);
+    if (user) setIsLogin(true);
+    else setIsLogin(false);
   }, [user, handleLogout]);
 
 
@@ -50,19 +50,19 @@ function NavScroll() {
           
           
           <Nav>
-            {isRegister ? (
+            {isLogin ? (
               <Dropdown style={{paddingRight:"115px"}}>
                 <Dropdown.Toggle id="user-dropdown" variant="white">
                   <img src={masgan} alt="Masgan" width={50} className="rounded-pill" />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu variant="dark" style={{alignItem:"left", marginTop:"7px"}}>
-                  <Dropdown.Item href="/profile">
+                  <Dropdown.Item as = {Link} to="/profile">
                     <FaUserAlt className="text-danger me-2" />{" "}
                     <span>Profile</span>
                   </Dropdown.Item>
 
-                  <Dropdown.Item href="/payment">
+                  <Dropdown.Item as = {Link} to="/payment">
                     <FaMoneyBillAlt className="text-danger me-2" />{" "}
                     <span>Pay</span>
                   </Dropdown.Item>

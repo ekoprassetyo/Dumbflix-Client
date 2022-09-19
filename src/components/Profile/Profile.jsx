@@ -117,12 +117,6 @@ function ProfileHome() {
             </div>
             <div className='d-flex flex-column align-items-center justify-content-center'>
               <img className='rounded' src={profileUser} alt="nophoto" height={400}/>
-              <Button
-                variant="danger"
-                className="changePhotoBtn mt-2 btn-md px-2 py-1 ms-1"
-              >
-                Change Photo
-              </Button>
             </div>
           </div>
         </Card>
