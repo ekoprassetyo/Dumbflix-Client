@@ -3,116 +3,155 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'
 import { UserContext } from '../../context/userContext';
 import { useMutation } from 'react-query';
 import {Alert} from 'react-bootstrap'
 import API from '../../config/api';
 import '../../components/Auth.modules.css'
 
-// const dataLogin = JSON.parse(localStorage.getItem("dataLogin"));
-// const email = dataLogin.email;
-// const password = dataLogin.password;
-
-
-const UserDataObject = {
-  name: "",
-  email: "",
-  gender: "",
-  phone: "",
-  address: "",
-  password: "",
-  photo: "",
-  status: "Active",
-  role : "" ,
-};
-
 const AuthModal = ({ show, handleClose }) => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
   
-  const [iconPassword, seticonPassword] = useState(false);
-
   const navigate = useNavigate();
-  
-  const switchMode = () => {
-    setUserData(UserDataObject);
-    seticonPassword(false);
-    setIsLogin(!isLogin);
-  };
+  const [state, dispatch] = useContext(UserContext);
+  const [message, setMessage] = useState(null);
 
-  const [userData, setUserData] = useState(UserDataObject);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    gender: "",
+    phone: "",
+    address: "",
+    password: "",
+    photo: "",
+    status: "Active",
+    role : "" ,
+  });
+
+  const {email, password, fullname, gender, phone, address } = form;
 
   const handleChange = (event) => {
-    setUserData((prevData) => ({
-      ...prevData,
+    setForm({
+      ...form,
       [event.target.name]: event.target.value
-    }));
+    })
   };
 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const dataLogin = {
-      Email : userData.email,
-      Password : userData.password
-    }
-
-    const dataRegister = {
-      Name : userData.name,
-      Email : userData.email,
-      Gender : userData.gender,
-      Phone : userData.phone,
-      Address : userData.address,
-      Password : userData.password,
-      Role : userData.role
-    }
-    
-    if (isLogin) {
-      try {
-        let result = await API.post('/register', dataRegister)
-        console.log(result)
-        Swal.fire(
-          'Good job!',
-          'Succesfuly Register',
-          'success'
-          )
-          setIsLogin(false)
-      } catch (err){
-        console.log(err)
+  const handleSubmit = useMutation(async (event) => {
+    try {
+      event.preventDefault()
+    // Configuration content-type
+    const config = {
+        headers : {
+          'Content-type': 'application/json',
+        }
       }
-    } else {   
-      try {
-        let result = await API.post('/login', dataLogin)
+
+    if (isRegister) {
+
+        // Data body
+        const body = JSON.stringify(form);
+
+        // Insert data ke database
+        let result = await API.post('/register', body, config)
         console.log(result)
-        
-            if (dataRegister.role == "admin") {
-              navigate("/admin");
+
+            // Notifikasi
+            if(result.status === 200) {
+              const alert = (
+                <Alert variant="success" className="py-1">
+                  Success
+                </Alert>
+              );
+              setMessage(alert);
+              setForm({
+                name: "",
+                email: "",
+                gender: "",
+                phone: "",
+                address: "",
+                password: "",
+              });
+              switchRegister()
             } else {
-              navigate("/")
+              const alert = (
+                <Alert variant="danger" className="py-1">
+                  Failed regist
+                </Alert>
+              );
+              setMessage(alert);
             }
+          } else {
+            // Data body
+            const body = JSON.stringify(form) 
+            
+            // Insert data ke database
+            let result = await API.post('/login', body, config)
+            console.log(result)
 
-        localStorage.setItem("user", JSON.stringify(userData));
-        handleClose();
-      } catch (err) {
-        console.log(err)
-      }
+            // Notification
+            if (result.status === 200) {
+              // send data to useContext
+              dispatch({
+                type:"LOGIN_SUCCESS",
+                payload: result.data.data
+              })
+              const alert = (
+                <Alert variant="success" className="py-1">
+                  Success
+                </Alert>
+              );
+              setMessage(alert);
+              setForm({
+                email: "",
+                password: "",
+              });
+            } else {
+              const alert = (
+                <Alert variant="danger" className="py-1">
+                  Failed Login
+                </Alert>
+              );
+              setMessage(alert);
+            }
+          if (result.data.data.role === "admin") {
+            navigate('/listfilm')
+          } else {
+            navigate('/')
+          }
+          handleClose()
+        }
+
+    } catch (error) {
+      const alert = (
+        <Alert variant="danger" className="py-1">
+          Failed
+        </Alert>
+      );
+      setMessage(alert);
+      console.log(error);
     }
+  })
 
-  };
+  const switchRegister = () => {
+    setForm(form)
+    setIsRegister(!isRegister)
+  } 
 
   return (
     <Modal show={show} onHide={handleClose}>
 
       <Modal.Header className="bg-dark text-white border-0">
-        <Modal.Title>{isLogin ? "Register" : "Login"}</Modal.Title>
+        <Modal.Title>{isRegister ? "Register" : "Login"}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body className="bg-dark text-white border-0">
-        <Form className="px-1" onSubmit={handleSubmit}>
+        {message && message}
+        <Form className="px-1" onSubmit={(event) => handleSubmit.mutate(event)}>
           
            {/* Full Name */}
-           {isLogin && (
+           {isRegister && (
             <Form.Group className="mb-3" controlId="name">
               <Form.Control type="text" name="name" placeholder="Full Name" className="bg-gradient-secondary" onChange={handleChange} />
             </Form.Group>
@@ -123,7 +162,7 @@ const AuthModal = ({ show, handleClose }) => {
           </Form.Group>
 
           {/* Gender */}
-          {isLogin && (
+          {isRegister && (
             <Form.Select className="mb-3" onChange={handleChange} name="gender" >
               <option disabled selected hidden>Gender</option>
               <option value="Male">Male</option>
@@ -132,14 +171,14 @@ const AuthModal = ({ show, handleClose }) => {
           )}
 
           {/* Phone*/}
-          {isLogin && (
+          {isRegister && (
             <Form.Group className="mb-3" controlId="phone">
               <Form.Control name="phone" type="text" placeholder="Phone" onChange={handleChange} />
             </Form.Group>
           )}
 
           {/* Address */}
-          {isLogin && (
+          {isRegister && (
             <Form.Group className="mb-3" controlId="address">
               <Form.Control as="textarea" name="address" placeholder="Address"  onChange={handleChange} />
             </Form.Group>
@@ -148,18 +187,18 @@ const AuthModal = ({ show, handleClose }) => {
             {/* Password */}
             <div className="mb-3 pw__container">
             <Form.Group controlId="password">
-              <Form.Control type={iconPassword ? "text" : "password"} name="password" placeholder="Password" onChange={handleChange} />
+              <Form.Control type="password" name="password" placeholder="Password" onChange={handleChange} />
             </Form.Group>
           </div>
 
           <div className="bg-dark text-white border-0 d-grid gap-2 p-4">
-            <Button variant = {isLogin ? "light" : "danger"} type="submit" className={isLogin ? "text-danger" : "text-white"}>
-              {isLogin ? "Register" : "Login"}
+            <Button variant = {isRegister ? "light" : "danger"} type="submit" className={isRegister ? "text-danger" : "text-white"}>
+              {isRegister ? "Register" : "Login"}
             </Button>
             
             <p className="text-muted text-center mt-2">
-              {isLogin ? "Already have an account? Click " : "Don't have an account? Click "} {" "}
-              <span className="switchBtn text-primary" onClick={switchMode}> Here </span>
+              {isRegister ? "Already have an account? Click " : "Don't have an account? Click "} {" "}
+              <span className="switchBtn text-primary" onClick={switchRegister}> Here </span>
             </p>
           </div>
 

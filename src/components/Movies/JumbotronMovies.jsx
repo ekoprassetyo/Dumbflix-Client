@@ -1,12 +1,12 @@
 import Card from 'react-bootstrap/Card';
-import TvPicture from '../../assets/images/tvShow.png'
+import TvPicture from '../../assets/images/joker-option1.jpg'
 import Joker from '../../assets/images/joker.png'
 
 function JumbotronMovies() {
     return(
     <div>
         <Card style={{backgroundColor: "black"}}>
-        <Card.Img src={TvPicture}  alt="Card image" style= {{width:"100vw", height:"100vh", padding:"0px"}} />
+        <Card.Img src={TvPicture}  alt="Card image" style= {{width:"100%", height:"100vh", padding:"0px", backgroundSize:"cover"}} />
         <Card.ImgOverlay>
           <Card.Title> <img src={Joker} alt="" className="ms-5" style={{marginTop: "200px"}}/> </Card.Title>
           <Card.Text className="text-justify ms-5 text-light fw-semibold" >

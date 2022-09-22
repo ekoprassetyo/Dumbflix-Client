@@ -21,7 +21,7 @@ function HeaderAdmin() {
 // };
 
   return (
-    <Navbar bg="dark" expand="lg" className="sticky-sm-top">
+    <Navbar expand="lg" className="sticky-sm-top" style={{backgroundColor:"transparent"}}>
     <Container variant="dark" style={{ paddingRight:"40px"}}>
         <Navbar.Brand as = {Link} to="/admin">
             <img
@@ -34,18 +34,14 @@ function HeaderAdmin() {
             />{' '}
         </Navbar.Brand>
         <Navbar.Brand >
-            <Navbar variant="dark" bg="dark" expand="lg" >
+            <Navbar variant="dark" style={{backgroundColor:"transparent"}} expand="lg" >
                 <Container fluid >
-                    <Navbar.Toggle aria-controls="navbar-black-example" className='bg-dark' />
-                    <Navbar.Collapse id="navbar-black-example" className='bg-dark' >
+                    <Navbar.Toggle aria-controls="navbar-black-example" style={{backgroundColor:"transparent"}} />
+                    <Navbar.Collapse id="navbar-black-example" style={{backgroundColor:"transparent"}} >
                         <Nav>
-                            <img
-                                alt=""
-                                src={Masgan}
-                                width="50"
-                                backgroundColor={"black"}/>
-                            <Dropdown >
-                                <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                            <Dropdown className="text-decoration-none p-0">
+                                <Dropdown.Toggle style={{backgroundColor:"transparent",border:"none"}} className="text-decoration-none" id="dropdown-basic">
+                                    <img alt="" src={Masgan} width="50" backgroundColor={"black"}/>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu variant='dark' >
                                     <Dropdown.Item as = {Link} to="/listfilm" className='d-flex '>

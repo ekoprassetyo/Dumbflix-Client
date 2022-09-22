@@ -15,74 +15,22 @@ import QuietPlace from "../../assets/images/QuietPlace.png"
 import Frozen from "../../assets/images/Frozen.png"
 import Suicide from "../../assets/images/SQ.png"
 import FilmCard from './FilmCard';
+import API from '../../config/api';
+import { Link, useNavigate } from "react-router-dom";
+import { useQuery } from 'react-query';
 import Square from "../../components/Timbul.module.css"
 
 function ListFilm() {
-    const [filmList, setFilmList] = useState([
-        {
-            filmImg : Avengers ,
-            title : "Avengers: Endgame",
-            year : 2019,
-        } ,
-        {
-            filmImg : Batman ,
-            title : "Batman",
-            year : 2019,
-        } ,
-        {
-            filmImg : TheGodFather ,
-            title : "The GodFather",
-            year : 2019,
-        } ,
-        {
-            filmImg : Totoro ,
-            title : "Totoro",
-            year : 2019,
-        } ,
-        {
-            filmImg : JokerMv ,
-            title : "Joker",
-            year : 2019,
-        } ,
-        {
-            filmImg : Suicide ,
-            title : "Suicide Squad" ,
-            year : 2019,
-        } ,
-        {
-            filmImg : ST ,
-            title : "Serigala Terakhir" ,
-            year : 2019,
-        } ,
-        {
-            filmImg : QuietPlace ,
-            title : "Quiet Place",
-            year : 2019,
-        } ,
-        {
-            filmImg : Parasite ,
-            title : "Parasite",
-            year : 2019,
-        } ,
-        {
-            filmImg : Chernobly ,
-            title : "Chernobly",
-            year : 2019,
-        } ,
-        {
-            filmImg : Grave ,
-            title : "Grave",
-            year : 2019,
-        } ,
-        {
-            filmImg : Frozen ,
-            title : "Frozen II",
-            year : 2019,
-        } ,
-    ])
+
+    let { data: films } = useQuery("filmsCache", async () => {
+        const response = await API.get("/films");
+        return response.data.data;
+    })
+
+
   return (
     <>
-    <div style={{marginTop:"120px"}} className="d-flex me-2">
+    <div style={{marginTop:"50px"}} className="d-flex me-2">
         <div className="w-100">
         <Container fluid>
             <div className="d-flex" style={{width:"100%"}}>
@@ -96,13 +44,12 @@ function ListFilm() {
 
                     <Dropdown.Menu className="bg-dark">
                         <Dropdown.Item href="/listfilm" className="text-light" >TV Series</Dropdown.Item>
-                        <Dropdown.Item href="/listfilm" className="text-light">films</Dropdown.Item>
+                        <Dropdown.Item href="/listfilm" className="text-light">Movies</Dropdown.Item>
                     </Dropdown.Menu>
                     </Dropdown>
                 </div>
                 <div className="ms-auto me-5">
-                    <a href="/addfilm">  <button className="text-light fw-semibold" style={{padding:"5px 50px" , borderRadius:"10px" , backgroundColor:"red"}}> Add Film</button></a>
-              
+                <Link to = "/addfilm">  <button className="text-light fw-semibold" style={{padding:"5px 50px" , borderRadius:"10px" , backgroundColor:"red"}}> Add Film</button></Link>
                 </div>
             </div>
             </Container>
@@ -114,17 +61,14 @@ function ListFilm() {
         <Container className="my-5 overflow-hidden" style={{backgroundColor: "black"}}>
         <h3 className="text-start text-white fw-bold mb-3">TV Series</h3>
         <Row> 
-          {filmList.map((film, index) => (
-
+          {films?.map((movies, index) => (
             <Col md={2} key={index}>
-                <a href="/adminvideo" style={{textDecoration:"none"}}  className={Square.Square}>
                     <FilmCard
-                    filmImg={film.filmImg}
-                    title={film.title}
-                    year={film.year}
+                    id={movies.id}
+                    filmImg={movies.thumbnailfilm}
+                    title={movies.title}
+                    year={movies.year}
                     />
-                </a>
-             
             </Col>
           ))}
         </Row>

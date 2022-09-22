@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {
   FaEnvelope,
   FaFemale,
@@ -12,6 +12,9 @@ import {Container, Row, Col, Card, Button} from 'react-bootstrap'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import profileUser from '../../assets/images/profileUser.png';
+import { useQuery } from 'react-query';
+import API from '../../config/api';
+import { UserContext } from '../../context/userContext';
 
 
 const initialUser = {
@@ -24,32 +27,29 @@ const initialUser = {
 }
 function ProfileHome() {
 
-  const [isLogin, setIsLogin] = useState(false)
+  const [state, dispatch] = useContext(UserContext)
   const [userData, setUserData] = useState(initialUser)
 
-  const user = JSON.parse(localStorage.getItem('user'))
+  const users = localStorage.getItem('token')
 
   const navigate = useNavigate()
 
+  let {data: user } = useQuery('userCache', async () => {
+    const result = await API.get('/user')
+    setUserData(result.data.data)
+    console.log(result)
+    return result.data.data
+  })
+
   useEffect(()=> {
-    if(user){
-      setIsLogin(true)
-      setUserData({
-        ...userData,
-        name: user?.name,
-        email: user?.email,
-        password: user?.password,
-        gender: user?.gender,
-        phone: user?.phone,
-        address: user?.address
+    if(!users){
+      dispatch({
+        type: 'LOGOUT'
       })
-    }
-    else{
-      setIsLogin(false)
       setUserData(initialUser)
       navigate('/')
     }
-  }, [user, isLogin])
+  }, [users, state.isLogin])
   
 
   return (

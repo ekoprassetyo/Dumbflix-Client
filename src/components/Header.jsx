@@ -10,41 +10,43 @@ import { useEffect } from "react";
 import masgan from "../assets/images/masgan.png";
 import AdminAnduser from "../components/adminAnduser"
 import { FaUserAlt, FaMoneyBillAlt, FaSignOutAlt } from "react-icons/fa";
+import { useContext } from 'react';
+import { UserContext } from '../context/userContext';
 
 
 function NavScroll() {
   const [show, setShow] = useState(false);
+
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-
-  // const [isLogin, setisRegister] = useState(false);
-  
-  const [isLogin, setIsLogin] = useState(false);
-
-  const user = JSON.parse(localStorage.getItem("user"));
-
+  const [state, dispatch] = useContext(UserContext)
+  const user = localStorage.getItem('token')
   const navigate = useNavigate();
 
-  const handleLogout = () => { localStorage.removeItem("user");
+  const [isLogin, setIsLogin] = useState(false);
+
+  const handleLogout = () => { 
+    localStorage.removeItem("token")
     navigate("/");
   };
 
   useEffect(() => {
-    if (user) setIsLogin(true);
-    else setIsLogin(false);
-  }, [user, handleLogout]);
-
-
+    if (user) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, [state, handleLogout]);
 
   return (
-    <Navbar className= "fixed-top" bg="dark" expand="lg" >
+    <Navbar className= "fixed-top" bg="" expand="lg" style={{backgroundColor:"transparent"}}>
       <Container fluid>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="" style={{ width: "75%" }}navbarScroll >
-            <Nav.Link as =  {Link} to='/' className="text-light fs-5 fw-light ms-5" >Home</Nav.Link>
-            <Nav.Link as =  {Link} to='/tvshow' className="text-light fs-5 fw-light ms-3" >TV Shows</Nav.Link>
-            <Nav.Link as =  {Link} to='/movies' className="text-light fs-5 fw-light ms-3" >Movies</Nav.Link>
+            <Nav.Link as =  {Link} to='/' className="text-light fs-5 fw-bold ms-5" >Home</Nav.Link>
+            <Nav.Link as =  {Link} to='/tvshow' className="text-light fs-5 fw-bold ms-3" >TV Shows</Nav.Link>
+            <Nav.Link as =  {Link} to='/movies' className="text-light fs-5 fw-bold ms-3" >Movies</Nav.Link>
           </Nav>
         <Navbar.Brand as = {Link} to="/"  style= {{ width: "100%",padding:"0px 0px 0px 180px" }} ><img src={LogoDF} alt="" /></Navbar.Brand>
           

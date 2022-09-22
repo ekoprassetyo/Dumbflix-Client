@@ -1,14 +1,14 @@
 import React from 'react'
 import Header from '../components/Header'
 import JumbotronTvShow from '../components/TV Show/JumbotronTvShow'
-import ContainerTvShow from '../components/TV Show/ContainerTvShow'
+import ContainerSeries from '../components/TV Show/ContainerSeries'
 
 function TvShowHome() {
   return (
     <div>
         <Header />
         <JumbotronTvShow />
-        <ContainerTvShow />
+        <ContainerSeries />
     </div>
   )
 }
