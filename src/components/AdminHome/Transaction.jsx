@@ -1,164 +1,87 @@
-import React from 'react'
-import Dropdown from 'react-bootstrap/Dropdown';
-import {IoCaretDownOutline} from 'react-icons/io5'
+import React, { useContext, useState } from 'react'
+import { useQuery } from 'react-query';
+import API from '../../config/api';
 import '../transaction.css'
 import { Table } from 'react-bootstrap';
 
 function Transaction() {
+
+  const [transactionData, setTransactionData] = useState([])
+
+  let { data: transaction } = useQuery("transactionCache", async () => {
+    const response = await API.get("/transactions");
+    setTransactionData(response.data.data)
+    return response.data.data;
+  });
+
+  console.log("transactionData", transactionData)
+
+  function Duration(dueDate, startDate) {
+    const due = new Date(dueDate);
+    startDate = new Date();
+
+    let duration;
+
+    if (startDate < due) {
+      duration = new Date(due - startDate);
+    }
+
+    let years = duration.getFullYear() - 1970
+    let months = duration.getMonth();
+    let days = duration.getDate();
+
+    let yearTxt = "year";
+    let monthTxt = "month";
+    let dayTxt = "day";
+
+    if (years > 1) yearTxt += "s";
+    if (months > 1) monthTxt += "s";
+    if (days > 1) dayTxt += "s";
+
+    if (years >= 1) {
+      duration = `${years} ${yearTxt} ${months} ${monthTxt} ${days} ${dayTxt}`;
+    } else if (months >= 1) {
+      duration = `${months} ${monthTxt} ${days} ${dayTxt}`;
+    } else {
+      duration = `${days} ${dayTxt}`;
+    }
+    return duration;
+  }
   return (
 
-    <div className="Transaction">
+    <div className="Transaction" style={{marginTop:"10px"}}>
          <div>
-            <h3 style={{marginTop:"100px"}} className="text-light">Incoming Transaction</h3>
+            <h3 style={{marginTop:"10px"}} className="text-light">Incoming Transaction</h3>
          </div>
-    <Table striped bordered hover className="table table-dark" style={{}}>
+     <Table striped bordered hover className="table table-dark" style={{}}>
     <thead>
-    <tr className="text-danger">
+    <tr className="text-danger text-center">
         <th>No</th>
-        <th>User</th>         
-        <th>Bukti Transfer</th>
-        <th>Remaining Active</th>
+        <th>Nama</th>         
+        <th>Email</th>
+        <th>Due Date</th>
         <th>Status User</th>
         <th>Status Payment</th>
-        <th>Action</th>
        </tr>
     </thead>
-    <tbody>
-    <tr className="">
-        <td>1</td>
-        <td>Radif Ganteng</td>
-        <td>bca.jpg</td>
-        <td>26 / Hari</td>
-        <td className="text-success">Active</td>
-        <td className="text-success">Approve</td>
-        <td>
-        <Dropdown className="dropdown">
-            <Dropdown.Toggle variant="success" id="dropdown-basic" className="">
-            </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-            <Dropdown.Item href="#/action-2" className="text-success">Aprroved</Dropdown.Item>
-            <Dropdown.Item href="#/action-3" className="text-danger">Cancel</Dropdown.Item>
-        </Dropdown.Menu>
-        </Dropdown>
-        </td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Haris Rahman</td>
-        <td>bni.jpg</td>
-        <td>26 / Hari</td>
-        <td className="text-success">Active</td>
-        <td className="text-success">Approve</td>
-        <td>
-        <Dropdown className="dropdown">
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-            </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-            <Dropdown.Item href="#/action-2" className="text-success">Aprroved</Dropdown.Item>
-            <Dropdown.Item href="#/action-3" className="text-danger">Cancel</Dropdown.Item>
-        </Dropdown.Menu>
-        </Dropdown>
-        </td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Amin Subagiyo</td>
-        <td>permata.jpg</td>
-        <td>0 / Hari</td>
-        <td className="text-danger">Not Active</td>
-        <td className="text-danger">Cancel</td>
-        <td>
-        <Dropdown className="dropdown">
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-            </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-            <Dropdown.Item href="#/action-2" className="text-success">Aprroved</Dropdown.Item>
-            <Dropdown.Item href="#/action-3" className="text-danger">Cancel</Dropdown.Item>
-        </Dropdown.Menu>
-        </Dropdown>
-        </td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Haris Astina</td>
-        <td>permata.jpg</td>
-        <td>0 / Hari</td>
-        <td className="text-danger">Not Active</td>
-        <td className="text-warning">Pending</td>
-        <td>
-        <Dropdown className="dropdown">
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-            </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-            <Dropdown.Item href="#/action-2" className="text-success">Aprroved</Dropdown.Item>
-            <Dropdown.Item href="#/action-3" className="text-danger">Cancel</Dropdown.Item>
-        </Dropdown.Menu>
-        </Dropdown>
-        </td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>Aziz Oni On</td>
-        <td>bi.jpg</td>
-        <td>0 / Hari</td>
-        <td className="text-danger">Not Active</td>
-        <td className="text-warning">Pending</td>
-        <td>
-        <Dropdown className="dropdown">
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-            </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-            <Dropdown.Item href="#/action-2" className="text-success">Aprroved</Dropdown.Item>
-            <Dropdown.Item href="#/action-3" className="text-danger">Cancel</Dropdown.Item>
-        </Dropdown.Menu>
-        </Dropdown>
-        </td>
-      </tr>
-      <tr>
-        <td>6</td>
-        <td>Sugeng No Pants</td>
-        <td>bni.jpg</td>
-        <td>0 / Hari</td>
-        <td className="text-danger">Not Active</td>
-        <td className="text-warning">Pending</td>
-        <td>
-        <Dropdown className="dropdown">
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-            </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-            <Dropdown.Item href="#/action-2" className="text-success">Aprroved</Dropdown.Item>
-            <Dropdown.Item href="#/action-3" className="text-danger">Cancel</Dropdown.Item>
-        </Dropdown.Menu>
-        </Dropdown>
-        </td>
-      </tr>
-    </tbody>
-    </Table>
+        <tbody>
+        {transactionData?.map((item, index) => {
+                    return (
+                      <>
+                        <tr style={{ height: "60px" }} className="text-center" key={index}>
+                          <td>{index + 1}</td>
+                          <td>{item.user.name}</td>
+                          <td>{item.user.email}</td>
+                          <td>{Duration(item.duedate, item.startdate)}</td>
+                          <td className={item.status === "success" ? "text-success" : "text-danger"}>{item.status === "success" ? "Active" : "Not Active"}</td>
+                          <td className={item.status === "success" ? "text-success" : item.status === "pending" ? "text-warning" : "text-danger"}>{item.status === "success" ? "Success" : item.status === "pending" ? "Pending" : "Failed"}</td>
+                        </tr>
+                      </>
+                    );
+                  })}
+        </tbody>
+      </Table>
     </div>
-
-    
-//     <Table striped bordered hover variant="dark" className="" style= {{width:"75%", margin:"200px"}}>
-//     <thead>
-//       <tr className="text-danger">
-//         <th>No</th>
-//         <th>User</th>
-//         <th>Bukti Transfer</th>
-//         <th>Remaining Active</th>
-//         <th>Status User</th>
-//         <th>Status Payment</th>
-//         <th>Action</th>
-//       </tr>
-//     </thead>
-//     <tbody>
-      
-//     </tbody>
-//   </Table>
   )
 }
 

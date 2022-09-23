@@ -16,9 +16,11 @@ import { FaLink } from 'react-icons/fa';
 function HeaderAdmin() {
     
   const navigate = useNavigate();  
-//   const handleLogout = () => { localStorage.removeItem("user");
-//   navigate("/");
-// };
+  
+  const handleLogout = () => { 
+    localStorage.removeItem("token")
+    navigate("/");
+  };
 
   return (
     <Navbar expand="lg" className="sticky-sm-top" style={{backgroundColor:"transparent"}}>
@@ -49,7 +51,7 @@ function HeaderAdmin() {
                                         <p className='text-danger  mx-2 mt-3 mb-2'>Film</p>
                                     </Dropdown.Item>
                                     <hr></hr>
-                                    <Dropdown.Item as = {Link} to="/" className='d-flex'>
+                                    <Dropdown.Item as = {Link} to="/admin" className='d-flex' onClick={handleLogout}>
                                         <img src={LogOut} alt="image4" />
                                         <p className='text-danger  mx-2 mt-3 mb-2'>Log out</p>
                                     </Dropdown.Item>

@@ -23,15 +23,26 @@ if (localStorage.token) {
 
 function App() {
   const navigate = useNavigate()
-  const [state, dispatch] = useContext(UserContext);
+  const [state, dispatch] = useContext(UserContext); // membuat atau memanggil useContext yang dimana state menampung UserContext
+  console.log("ini state", state)
 
+  // useEffect(() => {
+  //   if (localStorage.token) {
+  //     setAuthToken(localStorage.token)
+  //   }
 
-  const [isLogged, setIsLogged] = useState(false)
+  //   // Redirect Auth
+  //   if(state.user.role === "admin") {
+  //     navigate("/admin")
+  //   } else {
+  //     navigate("/")
+  //   }
+  // },[state])
 
   const checkUser = async () => {
     try {
       const response = await API.get("/check-auth");
-
+      // return console.log("response" , response.data.data)
       // If the token incorrect
       if (response.status === 404) {
         return dispatch({
@@ -40,7 +51,7 @@ function App() {
       }
 
       // Get user data
-      let payload = response.data.data.user;
+      let payload = response.data.data;
       // Get token from local storage
       payload.token = localStorage.token;
 
@@ -58,7 +69,7 @@ function App() {
     if (localStorage.token) {
       checkUser();
     }
-  }, [state]); 
+  }, []); 
 
   return (
       <Routes>

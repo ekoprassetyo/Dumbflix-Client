@@ -71,7 +71,7 @@ function NavScroll() {
 
                   <Dropdown.Divider className="bg-secondary" />
 
-                  <Dropdown.Item href="#" onClick={handleLogout}>
+                  <Dropdown.Item as = {Link} to="/" onClick={handleLogout}>
                     <FaSignOutAlt className="text-danger me-2" />
                     <span>Logout</span>
                   </Dropdown.Item>

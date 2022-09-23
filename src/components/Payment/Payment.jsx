@@ -12,6 +12,7 @@ import { useRef } from "react";
 function PaymentHome() {
   const navigate = useNavigate()
   const [state] = useContext(UserContext)
+  console.log(state)
   const [previewSrc, setPreviewSrc] = useState(null);
   const [file, setFile] = useState(null);
   
@@ -19,7 +20,7 @@ function PaymentHome() {
     //change this to the script source you want to load, for example this is snap.js sandbox env
     const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
     //change this according to your client-key
-    const myMidtransClientKey = "SB-Mid-client-on6S64ToFp0HbEkn";
+    const myMidtransClientKey = "SB-Mid-client-aDYXJFh6Atm_jUfl";
   
     let scriptTag = document.createElement("script");
     scriptTag.src = midtransScriptUrl;
@@ -55,11 +56,11 @@ function PaymentHome() {
       // init snap for display payment page with token here
       window.snap.pay(token, {
         onSuccess: function (result) {
-          navigate("/user/profile")
+          navigate("/profile")
         },
         onPending: function (result) {
           /* You may add your own implementation here */
-          navigate("/user/profile");
+          navigate("/profile");
         },
         onError: function (result) {
           /* You may add your own implementation here */
@@ -108,22 +109,13 @@ function PaymentHome() {
 
         <div>
           <p className="text-danger fw-bold">
-            DUMBFLIX <span className="text-light">: -</span>{" "}
+            SUBSCRIBE NOW <span className="text-light">: -</span>{" "}
           </p>
         </div>
 
         <Form style={{width:"30%", margin: "20px auto"}}>
-          <Form.Group className="mb-3" controlId="accountNumber">
-            <Form.Control type="email" placeholder="Input your account number" className="border border-light border-3 formPayment"/>
-          </Form.Group>
-
-          <Form.Group className="mb-5" controlId="formBasicPassword">
-            <Form.Label className="labelInputFile rounded">Attache proof of transfer</Form.Label>
-            <Form.Control  onChange={(e) => onChangeFiles(e)} type="file"></Form.Control>
-          </Form.Group>
-
-          <Button onClick={(event) => handlePayment.mutate(event)}  variant="primary" type="submit" className="border-0 btnSubmitPayment py-2 fw-bold">
-            Submit
+          <Button onClick={(event) => handlePayment.mutate(event)}  variant="danger" type="submit" className="border-0 btnSubmitPayment py-2 fw-bold">
+            Subsribe Now
           </Button>
         </Form>
       </div>

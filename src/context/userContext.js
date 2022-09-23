@@ -4,7 +4,6 @@ export const UserContext = createContext();
 
 const initialState = {
   isLogin: false,
-  isAdmin: false,
   user: {},
 };
 
@@ -12,20 +11,17 @@ const reducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case "AUTH_SUCCESS":
+    case "USER_SUCCESS":
     case "LOGIN_SUCCESS":
       localStorage.setItem("token", payload.token);
       return {
         isLogin: true,
-        isAdmin: payload.role == "admin" ? true : false ,
         user: payload,
       };
     case "AUTH_ERROR":
     case "LOGOUT":
       localStorage.removeItem("token");
       return {
-        isLogin: false,
-        isAdmin: false,
         user: {},
       };
     default:

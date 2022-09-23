@@ -9,6 +9,7 @@ function VideoDetail() {
 
   const [isLogin, setIsLogin] =useState(false)
   const [state] = useContext(UserContext)
+  console.log("ini state video detail",state);
 
   const navigate = useNavigate()
   const {id} = useParams()

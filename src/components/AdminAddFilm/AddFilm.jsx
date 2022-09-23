@@ -88,7 +88,7 @@ function AddFilm() {
 
 
   return (
-<div style={{marginTop:"100px" , padding:"0px 150px"}}>
+<div style={{padding:"0px 150px"}}>
     <div>
         <h2 className="text-light fw-bold">Add Film</h2>
     </div>
