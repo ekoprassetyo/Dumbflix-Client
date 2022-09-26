@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const ContainerMovies = () => {
   let navigate = useNavigate
   const [state] = useContext(UserContext)
-  // console.log("ini state film", state);
+  console.log("ini state film", state);
   
   let { data: films } = useQuery("moviesCache", async () => {
     const response = await API.get("/films");
