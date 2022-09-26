@@ -86,7 +86,7 @@ function ProfileHome() {
               </div>
             </div>
               <div style={{display:"flex", alignContent:"center" }}>
-                <img src={profileUser} alt="avatar" className="profile-avatar" style={{objectFit:"cover", borderRadius:"8px", boxShadow:"10px 10px 10px rgba(0,0,0, 0.425)"}} />
+                <img src={profileUser} alt="avatar" width="50%" className="profile-avatar" style={{objectFit:"cover", borderRadius:"8px", boxShadow:"10px 10px 10px rgba(0,0,0, 0.425)"}} />
               </div>
           </div>
         </Card>
