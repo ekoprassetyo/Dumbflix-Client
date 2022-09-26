@@ -72,7 +72,8 @@ function Transaction() {
                           <td>{index + 1}</td>
                           <td>{item.user.name}</td>
                           <td>{item.user.email}</td>
-                          <td>{Duration(item.duedate, item.startdate)}</td>
+                          {item.status == "success" ?
+                          <td>{Duration(item.duedate, item.startdate)}</td> : <td>-</td>}
                           <td className={item.status === "success" ? "text-success" : "text-danger"}>{item.status === "success" ? "Active" : "Not Active"}</td>
                           <td className={item.status === "success" ? "text-success" : item.status === "pending" ? "text-warning" : "text-danger"}>{item.status === "success" ? "Success" : item.status === "pending" ? "Pending" : "Failed"}</td>
                         </tr>

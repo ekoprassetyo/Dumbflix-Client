@@ -14,6 +14,7 @@ const reducer = (state, action) => {
     case "USER_SUCCESS":
     case "LOGIN_SUCCESS":
       localStorage.setItem("token", payload.token);
+      console.log("ini payload" ,payload)
       return {
         isLogin: true,
         user: payload,
@@ -22,6 +23,7 @@ const reducer = (state, action) => {
     case "LOGOUT":
       localStorage.removeItem("token");
       return {
+        isLogin: false,
         user: {},
       };
     default:
@@ -31,6 +33,7 @@ const reducer = (state, action) => {
 
 export const UserContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  console.log("ini reducer",reducer)
 
   return (
     <UserContext.Provider value={[state, dispatch]}>

@@ -23,9 +23,7 @@ const AuthModal = ({ show, handleClose }) => {
     phone: "",
     address: "",
     password: "",
-    photo: "",
     status: "Active",
-    role : "" ,
   });
 
   const {email, password, fullname, gender, phone, address } = form;
@@ -116,7 +114,7 @@ const AuthModal = ({ show, handleClose }) => {
               setMessage(alert);
             }
           if (result.data.data.role === "admin") {
-            navigate('/listfilm')
+            navigate('/admin')
           } else {
             navigate('/')
           }

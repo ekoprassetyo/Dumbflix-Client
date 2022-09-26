@@ -23,20 +23,23 @@ function NavScroll() {
   const user = localStorage.getItem('token')
   const navigate = useNavigate();
 
-  const [isLogin, setIsLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
 
   const handleLogout = () => { 
-    localStorage.removeItem("token")
+    console.log("ini state header", state);
+    dispatch({
+      type: "LOGOUT",
+    });
     navigate("/");
   };
 
-  useEffect(() => {
-    if (user) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-  }, [state, handleLogout]);
+  // useEffect(() => {
+  //   if (user) {
+  //     setIsLogin(true);
+  //   } else {
+  //     setIsLogin(false);
+  //   }
+  // }, [state, handleLogout]);
 
   return (
     <Navbar className= "fixed-top" bg="" expand="lg" style={{backgroundColor:"transparent"}}>
@@ -52,7 +55,7 @@ function NavScroll() {
           
           
           <Nav>
-            {isLogin ? (
+            {state.isLogin ? (
               <Dropdown style={{paddingRight:"115px"}}>
                 <Dropdown.Toggle id="user-dropdown" variant="white">
                   <img src={masgan} alt="Masgan" width={50} className="rounded-pill" />
@@ -71,7 +74,7 @@ function NavScroll() {
 
                   <Dropdown.Divider className="bg-secondary" />
 
-                  <Dropdown.Item as = {Link} to="/" onClick={handleLogout}>
+                  <Dropdown.Item href="#" onClick={handleLogout}>
                     <FaSignOutAlt className="text-danger me-2" />
                     <span>Logout</span>
                   </Dropdown.Item>

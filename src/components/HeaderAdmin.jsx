@@ -2,7 +2,7 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate, Link } from 'react-router-dom';
-import React from 'react'
+import React, { useContext } from 'react'
 import Container from 'react-bootstrap/Container';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Logo from '../assets/images/dumbflix_logo.png';
@@ -10,17 +10,21 @@ import Masgan from '../assets/images/masgan.png';
 import FilmLogo from '../assets/images/film.png';
 import LogOut from '../assets/images/logout.png';
 import { FaLink } from 'react-icons/fa';
+import { UserContext } from '../context/userContext';
 
 
 
 function HeaderAdmin() {
-    
-  const navigate = useNavigate();  
+
+    const [state, dispatch] = useContext(UserContext)
+    const navigate = useNavigate();  
   
-  const handleLogout = () => { 
-    localStorage.removeItem("token")
-    navigate("/");
-  };
+    const handleLogout = () => { 
+        dispatch({
+            type:"LOGOUT",
+        })
+        navigate("/")
+    };
 
   return (
     <Navbar expand="lg" className="sticky-sm-top" style={{backgroundColor:"transparent"}}>
@@ -51,7 +55,7 @@ function HeaderAdmin() {
                                         <p className='text-danger  mx-2 mt-3 mb-2'>Film</p>
                                     </Dropdown.Item>
                                     <hr></hr>
-                                    <Dropdown.Item as = {Link} to="/admin" className='d-flex' onClick={handleLogout}>
+                                    <Dropdown.Item href="#" className='d-flex' onClick={handleLogout}>
                                         <img src={LogOut} alt="image4" />
                                         <p className='text-danger  mx-2 mt-3 mb-2'>Log out</p>
                                     </Dropdown.Item>

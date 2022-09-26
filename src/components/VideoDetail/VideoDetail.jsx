@@ -3,11 +3,12 @@ import { useNavigate,useParams } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
 import { useQuery } from "react-query";
 import API from "../../config/api";
+import Swal from "sweetalert2"
 
 
 function VideoDetail() {
 
-  const [isLogin, setIsLogin] =useState(false)
+  // const [isLogin, setIsLogin] =useState()
   const [state] = useContext(UserContext)
   console.log("ini state video detail",state);
 
@@ -20,11 +21,15 @@ function VideoDetail() {
   })
 
   useEffect(() => {
-    if(state) setIsLogin(true)
-    else {
-      setIsLogin(false)
-      alert('Silahkan Sign In')
-      navigate('/')
+    if(state.isLogin == false)
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'You have to login first!',
+    })
+    navigate('/')
+    if(state.isLogin == true) {
+      navigate(`/video/${id}`)
     }
   }, [state])
 

@@ -26,23 +26,23 @@ function App() {
   const [state, dispatch] = useContext(UserContext); // membuat atau memanggil useContext yang dimana state menampung UserContext
   console.log("ini state", state)
 
-  // useEffect(() => {
-  //   if (localStorage.token) {
-  //     setAuthToken(localStorage.token)
-  //   }
+  useEffect(() => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token)
+    }
 
-  //   // Redirect Auth
-  //   if(state.user.role === "admin") {
-  //     navigate("/admin")
-  //   } else {
-  //     navigate("/")
-  //   }
-  // },[state])
+    // Redirect Auth
+    if(state.user.role === "admin") {
+      navigate("/admin")
+    } else {
+      navigate("/")
+    }
+  },[state])
 
   const checkUser = async () => {
     try {
       const response = await API.get("/check-auth");
-      // return console.log("response" , response.data.data)
+      return console.log("response check auth" , response.data.data)
       // If the token incorrect
       if (response.status === 404) {
         return dispatch({
